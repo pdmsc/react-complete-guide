@@ -1,9 +1,12 @@
 import React from 'react';
+import Layout from './components/Layout/Layout'
 
 function App() {
   return (
     <div>
-      Almost before we knew it, we had left the ground.
+      <Layout>
+        <p>TEST</p>
+      </Layout>
     </div>
   );
 }
