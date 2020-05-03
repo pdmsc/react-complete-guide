@@ -1,15 +1,12 @@
 import React, {Component} from 'react';
 import Modal from '../../components/UI/Modal/Modal';
 import Aux from '../Aux/Aux';
-import axios from '../../axios-orders';
 
 const withErrorHandler = (WrappedComponent, axios) => {
     return class extends Component {
         state = {
             error: null,
         };
-
-        letR
 
         componentWillMount() {
             this.responseInterceptor = axios.interceptors.response.use(null, error => {
