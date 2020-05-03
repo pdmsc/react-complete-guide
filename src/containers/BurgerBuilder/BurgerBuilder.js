@@ -26,19 +26,16 @@ class BurgerBuilder extends Component {
     };
     
     componentDidMount() {
-        axios.get('ingredients.json').
-            then((response) => {
-                this.setState({
-                    ingredients: response.data
-                });
-                console.log(this.state.ingredients);
-
-            })
-            .catch((error) =>{
-                this.setState({
-                    error: true,
-                });
+        axios.get('ingredients.json').then((response) => {
+            this.setState({
+                ingredients: response.data
             });
+        })
+        .catch((error) =>{
+            this.setState({
+                error: true,
+            });
+        });
     }
 
     updatePurchaseableState = (ingredients) => {
@@ -106,33 +103,19 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        this.setState({
-            loading: true,
-        });
-
-        //alert("You continued");
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Pablo',
-                address: {
-                    street: '81 Test Street',
-                    zipCode: '91231',
-                    country: 'United States'
-                },
-                email: 'test@test.com',
-            },
-            deliveryMethod: 'fastest',
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
 
-        axios.post('/orders.json', order)
-            .then((response) => {
-                this.setState({
-                    loading: false,
-                    purchasing: false,
-                });
-            });
+        //add total price to query params
+        queryParams.push(encodeURIComponent('totalPrice') + '=' + encodeURIComponent(this.state.totalPrice));
+
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
+        });
     }
 
     render() {
